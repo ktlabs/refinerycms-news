@@ -34,6 +34,10 @@ class NewsItem < ActiveRecord::Base
       translations[:locale].eq(Globalize.locale)).where(pages[:id].eq(translations[:news_item_id]))
   }
 
+  belongs_to :feed_source
+
+  validates :feed_source_id, :presence => true
+
   def not_published? # has the published date not yet arrived?
     publish_date > Time.now
   end
