@@ -16,6 +16,11 @@
   </div>
 
   <div class='field'>
+    <%= f.label :feed_source_id %>
+    <%= f.select :feed_source_id, options_for_select(FeedSource.active.collect { |x| [x.name, x.id] }) %>
+  </div>
+  
+  <div class='field'>
     <%= f.label :publish_date %>
     <%= f.datetime_select :publish_date %>
   </div>
