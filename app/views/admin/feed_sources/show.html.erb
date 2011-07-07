@@ -1,0 +1,44 @@
+  <%= render :partial => "locale_picker",
+             :locals => {
+               :current_locale => Thread.current[:globalize_locale]
+             } if defined?(::Refinery::I18n) %>
+
+  <div class='field'>
+    <%= f.label :name %>
+    <%= @feed_entry.name %>
+  </div>
+
+  <div>
+    <%= f.label :active %>
+    <%= @feed_entry.active %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :url %>
+    <%= @feed_entry.url %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :pattern %>
+    <%= @feed_entry.pattern %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :img_pattern %>
+    <%= @feed_entry.img_pattern %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :etag %>
+    <%= @feed_entry.etag %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :last_modified %>
+    <%= @feed_entry.last_modified %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :last_entry_url %>
+    <%= @feed_entry.last_entry_url %>
+  </div>
