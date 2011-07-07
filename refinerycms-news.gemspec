@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
     'app/views/admin/feed_sources/edit.html.erb',
     'app/views/admin/feed_sources/index.html.erb',
     'app/views/admin/feed_sources/new.html.erb',
+    'app/views/admin/feed_sources/show.html.erb',
     'app/views/news_items',
     'app/views/news_items/_recent_posts.html.erb',
     'app/views/news_items/index.html.erb',
