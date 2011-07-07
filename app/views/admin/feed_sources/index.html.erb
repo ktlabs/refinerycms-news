@@ -4,10 +4,7 @@
       <%= render :partial => "/shared/admin/search", :locals => {:url => admin_news_items_url} %>
     </li>
     <li>
-      <%= link_to t('.create'), new_admin_news_item_url, :class => "add_icon" %>
-    </li>
-    <li>
-      <%= link_to t('.feed_sources'), admin_feed_sources_url %>
+      <%= link_to t('.create'), new_admin_feed_source_url, :class => "add_icon" %>
     </li>
   </ul>
 </div>
@@ -15,12 +12,12 @@
   <% if searching? %>
     <h2><%= t('shared.admin.search.results_for', :query => params[:search]) %></h2>
   <% end %>
-  <% if @news_items.any? %>
-    <%= will_paginate @news_items %>
+  <% if @feed_sources.any? %>
+    <%= will_paginate @feed_sources %>
     <ul>
-      <%= render :partial => "news_item", :collection => @news_items %>
+      <%= render :partial => "feed_source", :collection => @feed_sources %>
     </ul>
-    <%= will_paginate @news_items %>
+    <%= will_paginate @feed_sources %>
   <% else %>
     <p>
       <% unless searching? %>

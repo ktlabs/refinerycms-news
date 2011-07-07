@@ -1,0 +1,27 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>'>
+  <span class='title'>
+    <%= feed_source.name %>
+    <span class="preview">
+      <%= t('.active') %> <%= feed_source.active %>
+    </span>
+    <% if defined?(::Refinery::I18n) and ::Refinery::I18n.frontend_locales.many? and
+          (locales = feed_source.translations.collect{|t| t.locale}).present? %>
+      <span class='preview'>
+        <% locales.each do |locale| %>
+          <%= refinery_icon_tag "flags/#{locale}.png", :size => '16x11' %>
+        <% end %>
+      </span>
+    <% end %>
+  </span>
+  <span class='actions'>
+    <%= link_to refinery_icon_tag('application_go.png'), admin_feed_source_url(feed_source),
+                :title => t('.view_live_html') %>
+    <%= link_to refinery_icon_tag('application_edit.png'), edit_admin_feed_source_path(feed_source),
+                :title => t('.edit') %>
+    <%= link_to refinery_icon_tag('delete.png'), admin_feed_source_path(feed_source),
+                :class => "cancel confirm-delete",
+                :title => t('.delete'),
+                :method => :delete,
+                :confirm => t('shared.admin.delete.message', :title => feed_source.name) %>
+  </span>
+</li>

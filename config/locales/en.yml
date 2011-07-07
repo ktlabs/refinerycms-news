@@ -16,6 +16,11 @@ en:
         news_item: News
         no_items: "Sorry, no results found."
         no_items_yet: 'There are no news items yet. Click "Add News Item" to add your first news item.'
+        feed_sources: "Feed sources"
+      feed_source:
+        active: Active
+        view_live_html: "View this feed source"
+        edit: "Edit this feed source item"
   news_items:
     show:
       back_to_index: "Back to all news"
@@ -33,5 +38,15 @@ en:
         body: Body
         publish_date: Publish date
         expiration_date: Expiration date
+      feed_source:
+        name: Name
+        active: Active
+        url: URL
+        pattern: Content extraction pattern
+        img_pattern: Image extraction pattern
+        etag: Etag
+        last_modified: Feeds last modification date
+        last_entry_url: Feeds last entry url
     models:
       news_item: News Item
+      feed_source: Feed Source

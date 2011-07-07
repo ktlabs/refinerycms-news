@@ -1,0 +1,61 @@
+<%= form_for [:admin, @feed_entry] do |f| %>
+  <%= render :partial => "/shared/admin/error_messages",
+             :locals => {
+               :object => @feed_entry,
+               :include_object_name => true
+             } %>
+
+  <%= render :partial => "locale_picker",
+             :locals => {
+               :current_locale => Thread.current[:globalize_locale]
+             } if defined?(::Refinery::I18n) %>
+
+  <div class='field'>
+    <%= f.label :name %>
+    <%= f.text_field :name, :class => "larger widest" %>
+  </div>
+
+  <div>
+    <%= f.label :active %>
+    <%= f.checkbox :active %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :url %>
+    <%= f.text_field :url, :class => "larger widest" %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :pattern %>
+    <%= f.text_field :pattern %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :img_pattern %>
+    <%= f.img_pattern :img_pattern %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :etag %>
+    <%= @feed_entry.etag %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :last_modified %>
+    <%= @feed_entry.last_modified %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :last_entry_url %>
+    <%= @feed_entry.last_entry_url %>
+  </div>
+
+  <%= render :partial => "/shared/admin/form_actions",
+             :locals => {
+               :f => f,
+               :continue_editing => true,
+               :delete_title => t('admin.news_items.news_item.delete'),
+               :delete_confirmation => t('shared.admin.delete.message', :title => @feed_entry.name)
+             } %>
+
+<% end %>

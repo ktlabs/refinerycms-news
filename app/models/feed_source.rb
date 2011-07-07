@@ -4,4 +4,9 @@ class FeedSource < ActiveRecord::Base
 
   scope :active, where(:active => true)
 
+  # for will_paginate
+  def self.per_page
+    20
+  end
+
 end
