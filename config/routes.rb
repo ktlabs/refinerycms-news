@@ -3,7 +3,7 @@ Refinery::Application.routes.draw do
 
   scope(:path => 'refinery', :as => 'admin', :module => 'admin') do
     resources :news, :except => :show, :as => :news_items, :controller => :news_items
-    resources :feed_sources
+    resources :feed_sources, :as => :feed_sources, :controller => :feed_sources
   end
 end
 
