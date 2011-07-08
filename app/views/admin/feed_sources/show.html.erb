@@ -1,3 +1,4 @@
+<%= form_for [:admin, @feed_source] do |f| %>
   <%= render :partial => "locale_picker",
              :locals => {
                :current_locale => Thread.current[:globalize_locale]
@@ -5,40 +6,41 @@
 
   <div class='field'>
     <%= f.label :name %>
-    <%= @feed_entry.name %>
+    <%= @feed_source.name %>
   </div>
 
   <div>
     <%= f.label :active %>
-    <%= @feed_entry.active %>
+    <%= @feed_source.active %>
   </div>
 
   <div class='field'>
     <%= f.label :url %>
-    <%= @feed_entry.url %>
+    <%= @feed_source.url %>
   </div>
 
   <div class='field'>
     <%= f.label :pattern %>
-    <%= @feed_entry.pattern %>
+    <%= @feed_source.pattern %>
   </div>
 
   <div class='field'>
     <%= f.label :img_pattern %>
-    <%= @feed_entry.img_pattern %>
+    <%= @feed_source.img_pattern %>
   </div>
 
   <div class='field'>
     <%= f.label :etag %>
-    <%= @feed_entry.etag %>
+    <%= @feed_source.etag %>
   </div>
 
   <div class='field'>
     <%= f.label :last_modified %>
-    <%= @feed_entry.last_modified %>
+    <%= @feed_source.last_modified %>
   </div>
 
   <div class='field'>
     <%= f.label :last_entry_url %>
-    <%= @feed_entry.last_entry_url %>
+    <%= @feed_source.last_entry_url %>
   </div>
+<% end %>

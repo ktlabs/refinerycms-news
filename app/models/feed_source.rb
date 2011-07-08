@@ -9,4 +9,8 @@ class FeedSource < ActiveRecord::Base
     20
   end
 
+  def title
+    
+  end
+
 end

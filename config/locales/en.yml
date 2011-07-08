@@ -17,10 +17,14 @@ en:
         no_items: "Sorry, no results found."
         no_items_yet: 'There are no news items yet. Click "Add News Item" to add your first news item.'
         feed_sources: "Feed sources"
+    feed_sources:
       feed_source:
         active: Active
+        inactive: Inactive
         view_live_html: "View this feed source"
         edit: "Edit this feed source item"
+      index:
+        create: "Add Feed Source"
   news_items:
     show:
       back_to_index: "Back to all news"

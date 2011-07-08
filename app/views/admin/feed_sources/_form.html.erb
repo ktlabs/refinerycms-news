@@ -1,7 +1,7 @@
-<%= form_for [:admin, @feed_entry] do |f| %>
+<%= form_for [:admin, @feed_source] do |f| %>
   <%= render :partial => "/shared/admin/error_messages",
              :locals => {
-               :object => @feed_entry,
+               :object => @feed_source,
                :include_object_name => true
              } %>
 
@@ -17,7 +17,7 @@
 
   <div>
     <%= f.label :active %>
-    <%= f.checkbox :active %>
+    <%= f.check_box :active %>
   </div>
 
   <div class='field'>
@@ -32,22 +32,22 @@
 
   <div class='field'>
     <%= f.label :img_pattern %>
-    <%= f.img_pattern :img_pattern %>
+    <%= f.text_field :img_pattern %>
   </div>
 
   <div class='field'>
     <%= f.label :etag %>
-    <%= @feed_entry.etag %>
+    <%= @feed_source.etag %>
   </div>
 
   <div class='field'>
     <%= f.label :last_modified %>
-    <%= @feed_entry.last_modified %>
+    <%= @feed_source.last_modified %>
   </div>
 
   <div class='field'>
     <%= f.label :last_entry_url %>
-    <%= @feed_entry.last_entry_url %>
+    <%= @feed_source.last_entry_url %>
   </div>
 
   <%= render :partial => "/shared/admin/form_actions",
@@ -55,7 +55,7 @@
                :f => f,
                :continue_editing => true,
                :delete_title => t('admin.news_items.news_item.delete'),
-               :delete_confirmation => t('shared.admin.delete.message', :title => @feed_entry.name)
+               :delete_confirmation => t('shared.admin.delete.message', :title => @feed_source.name)
              } %>
 
 <% end %>

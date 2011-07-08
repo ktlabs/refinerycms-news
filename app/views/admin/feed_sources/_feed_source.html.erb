@@ -2,7 +2,7 @@
   <span class='title'>
     <%= feed_source.name %>
     <span class="preview">
-      <%= t('.active') %> <%= feed_source.active %>
+      <%= feed_source.active ?  t('.active') : t('.inactive') %>
     </span>
     <% if defined?(::Refinery::I18n) and ::Refinery::I18n.frontend_locales.many? and
           (locales = feed_source.translations.collect{|t| t.locale}).present? %>
