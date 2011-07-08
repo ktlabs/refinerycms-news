@@ -12,9 +12,9 @@ class FeedEntry < ActiveRecord::Base
     self.add_entries(feed.entries, feed_source, start_date)
   end
 
-  def self.full_fetch_active_feeds
+  def self.full_fetch_active_feeds(start_date = nil)
     FeedSource.active.each do |source|
-      self.full_fetch_feed(source, nil)
+      self.full_fetch_feed(source, start_date)
     end
   end
 
@@ -42,7 +42,7 @@ class FeedEntry < ActiveRecord::Base
     FeedSource.active.each do |source|
       source.etag.nil? ?
         self.full_fetch_feed(source, start_date) :
-        self.update_feed(source, start_date)
+        self.update_feed(source, nil)
     end
   end
 
