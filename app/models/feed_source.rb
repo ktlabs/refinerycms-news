@@ -12,7 +12,7 @@ class FeedSource < ActiveRecord::Base
   end
 
   def title
-    
+    name
   end
 
 end

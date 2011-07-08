@@ -5,11 +5,13 @@ class FeedEntry < ActiveRecord::Base
   def self.full_fetch_feed(feed_source, start_date)
     feed = Feedzirra::Feed.fetch_and_parse(feed_source.url)
 
-    feed_source.etag          = feed.etag
-    feed_source.last_modified = feed.last_modified
-    feed_source.save
+    if feed.respond_to?('etag')
+      feed_source.etag          = feed.etag
+      feed_source.last_modified = feed.last_modified
+      feed_source.save
 
-    self.add_entries(feed.entries, feed_source, start_date)
+      self.add_entries(feed.entries, feed_source, start_date)
+    end
   end
 
   def self.full_fetch_active_feeds(start_date = nil)
@@ -40,7 +42,7 @@ class FeedEntry < ActiveRecord::Base
 
   def self.update_active_feeds(start_date = nil)
     FeedSource.active.each do |source|
-      source.etag.nil? ?
+      source.last_modified.nil? ?
         self.full_fetch_feed(source, start_date) :
         self.update_feed(source, nil)
     end
