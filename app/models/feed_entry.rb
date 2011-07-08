@@ -2,23 +2,23 @@ class FeedEntry < ActiveRecord::Base
 
   belongs_to :feed_source
 
-  def self.full_fetch_feed(feed_source)
+  def self.full_fetch_feed(feed_source, start_date)
     feed = Feedzirra::Feed.fetch_and_parse(feed_source.url)
 
     feed_source.etag          = feed.etag
     feed_source.last_modified = feed.last_modified
     feed_source.save
 
-    self.add_entries(feed.entries, feed_source)
+    self.add_entries(feed.entries, feed_source, start_date)
   end
 
   def self.full_fetch_active_feeds
     FeedSource.active.each do |source|
-      self.full_fetch_feed(source)
+      self.full_fetch_feed(source, nil)
     end
   end
 
-  def self.update_feed(feed_source)
+  def self.update_feed(feed_source, start_date)
     feed_to_update               = Feedzirra::Parser::Atom.new
     feed_to_update.feed_url      = feed_source.url
     feed_to_update.etag          = feed_source.etag
@@ -31,20 +31,27 @@ class FeedEntry < ActiveRecord::Base
 
     feed = Feedzirra::Feed.update(feed_to_update)
 
-    self.add_entries(feed.new_entries, feed_source) if feed.updated?
+    feed_source.etag          = feed.etag
+    feed_source.last_modified = feed.last_modified
+    feed_source.save
+
+    self.add_entries(feed.new_entries, feed_source, start_date) if feed.updated?
   end
 
-  def self.update_active_feeds()
+  def self.update_active_feeds(start_date = nil)
     FeedSource.active.each do |source|
-      self.update_feed(source)
+      source.etag.nil? ?
+        self.full_fetch_feed(source, start_date) :
+        self.update_feed(source, start_date)
     end
   end
 
   private
 
-  def self.add_entries(entries, feed_source)
-    entries.each do |entry|
-      unless exists? :entry_id => entry.id
+  def self.add_entries(entries, feed_source, start_date)
+    entries.reverse.each do |entry|
+      if !exists?(:entry_id => entry.id) &&
+        (start_date.nil? || (entry.published >= start_date))
 
         entry.content.nil? ?
           unparsed_content = entry.summary :
