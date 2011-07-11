@@ -56,7 +56,9 @@ class FeedEntry < ActiveRecord::Base
         (start_date.nil? || (entry.published >= start_date))
 
         entry.content.nil? ?
-          unparsed_content = entry.summary :
+          (entry.summary.nil? ?
+            unparsed_content = entry.title :
+            upparsed_content = entry.summary) :
           unparsed_content = entry.content
 
         feed_source.pattern.empty? ?
