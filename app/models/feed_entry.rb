@@ -54,42 +54,46 @@ class FeedEntry < ActiveRecord::Base
     unless entries.blank?
       entries.reverse.each do |entry| 
         if !exists?(:entry_id => entry.id) && 
-          (start_date.nil? || (entry.published >= start_date))
+          (start_date.blank? || (entry.published >= start_date))
     
-          entry.content.nil? ?
-            (entry.summary.nil? ?
+          entry.content.blank? ?
+            (entry.summary.blank? ?
               unparsed_content = entry.title :
               upparsed_content = entry.summary) :
             unparsed_content = entry.content
     
-          feed_source.pattern.empty? ?
+          feed_source.pattern.blank? ?
             parsed_content = unparsed_content :
             parsed_content = Nokogiri::HTML(unparsed_content).at_css(feed_source.pattern).inner_html
     
-          parsed_img     = Nokogiri::HTML(unparsed_content).at_css(feed_source.img_pattern)
-    
-          if parsed_img.nil?
+          if feed_source.img_pattern.blank?
             img_id = nil
           else
-            image_url      = parsed_img.nil? ? nil :  parsed_img.attributes["src"].value
-    
-            img_plain      = HTTParty.get(image_url)
-            img_ext        = img_plain.headers["content-type"].sub("image/", "")
-    
-            img_file = Tempfile.new("news_items_image.#{img_ext}")
-            img_file.binmode
-            img_file.write(img_plain.body)
-            img_file.rewind
-    
-            img = Image.create(
-              :image => img_file
-            )
-            img.image_name = "news_item_image.#{img_ext}"
-            img.image_ext  = img_ext
-            img.save!
-            img_id = img.id
-    
-            img_file.close!
+            parsed_img     = Nokogiri::HTML(unparsed_content).at_css(feed_source.img_pattern)
+            
+            if parsed_img.nil?
+              img_id = nil
+            else
+              image_url      = parsed_img.nil? ? nil :  parsed_img.attributes["src"].value
+              
+              img_plain      = HTTParty.get(image_url)
+              img_ext        = img_plain.headers["content-type"].sub("image/", "")
+              
+              img_file = Tempfile.new("news_items_image.#{img_ext}")
+              img_file.binmode
+              img_file.write(img_plain.body)
+              img_file.rewind
+              
+              img = Image.create(
+                :image => img_file
+              )
+              img.image_name = "news_item_image.#{img_ext}"
+              img.image_ext  = img_ext
+              img.save!
+              img_id = img.id
+              
+              img_file.close!
+            end
           end
     
           create!(
