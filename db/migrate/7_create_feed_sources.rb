@@ -12,6 +12,8 @@ class CreateFeedSources < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    load(Rails.root.join('db', 'seeds', 'feed_sources.rb').to_s)
   end
 
   def self.down
