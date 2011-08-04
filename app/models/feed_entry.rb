@@ -129,7 +129,7 @@ class FeedEntry < ActiveRecord::Base
           I18n.locale = :en
           news_item = NewsItem.create(
             :title => entry.title,
-            :body => truncate(parsed_content),
+            :body => self.truncate(parsed_content),
             :publish_date => DateTime.now,
             :created_at => entry.published,
             :feed_source_id => feed_source.id,
@@ -138,7 +138,7 @@ class FeedEntry < ActiveRecord::Base
           
           I18n.locale = :ru
           news_item.title = entry.title
-          news_item.body  = truncate(parsed_content)
+          news_item.body  = self.truncate(parsed_content)
           news_item.save
         end
       end
@@ -150,7 +150,7 @@ class FeedEntry < ActiveRecord::Base
     I18n.locale = locale
   end
   
-  def truncate(str)
+  def self.truncate(str)
     result = ""
     index = 0
     str.each_char do |x|
