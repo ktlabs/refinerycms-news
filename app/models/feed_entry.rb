@@ -51,6 +51,8 @@ class FeedEntry < ActiveRecord::Base
   private
 
   def self.add_entries(entries, feed_source, start_date)
+    locale = I18n.locale
+    
     unless entries.blank?
       entries.reverse.each do |entry| 
         if !exists?(:entry_id => entry.id) && 
@@ -123,19 +125,39 @@ class FeedEntry < ActiveRecord::Base
             :feed_source_id => feed_source.id,
             :content        => parsed_content
           )
-          NewsItem.create(
+          
+          I18n.locale = :en
+          news_item = NewsItem.create(
             :title => entry.title,
-            :body => parsed_content,
+            :body => truncate(parsed_content),
             :publish_date => DateTime.now,
             :created_at => entry.published,
             :feed_source_id => feed_source.id,
             :image_id => img_id
           )
+          
+          I18n.locale = :ru
+          news_item.title = entry.title
+          news_item.body  = truncate(parsed_content)
+          news_item.save
         end
       end
     
       feed_source.last_entry_url = entries.first.url
       feed_source.save
     end
+    
+    I18n.locale = locale
   end
+  
+  def truncate(str)
+    result = ""
+    index = 0
+    str.each_char do |x|
+      result << x unless index > 200
+      index += 1
+    end
+    return result
+  end
+  
 end
