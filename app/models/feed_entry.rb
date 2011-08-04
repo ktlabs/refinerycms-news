@@ -56,15 +56,26 @@ class FeedEntry < ActiveRecord::Base
         if !exists?(:entry_id => entry.id) && 
           (start_date.blank? || (entry.published >= start_date))
     
-          entry.content.blank? ?
-            (entry.summary.blank? ?
-              unparsed_content = entry.title :
-              upparsed_content = entry.summary) :
+          if entry.content.blank?
+            if entry.summary.blank?
+              unparsed_content = entry.title
+            else
+              unparsed_content = entry.summary
+            end
+          else
             unparsed_content = entry.content
+          end
     
-          feed_source.pattern.blank? ?
-            parsed_content = unparsed_content :
-            parsed_content = Nokogiri::HTML(unparsed_content).at_css(feed_source.pattern).inner_html
+          if feed_source.pattern.blank?
+            parsed_content = unparsed_content
+          else
+            temp_parsed_content = Nokogiri::HTML(unparsed_content).at_css(feed_source.pattern)
+            if temp_parsed_content.blank?
+              parsed_content = unparsed_content
+            else
+              parsed_content = temp_parsed_content.inner_html
+            end
+          end
     
           if feed_source.img_pattern.blank?
             img_id = nil
@@ -74,7 +85,7 @@ class FeedEntry < ActiveRecord::Base
             if parsed_img.nil?
               img_id = nil
             else
-              image_url      = parsed_img.nil? ? nil :  parsed_img.attributes["src"].value
+              image_url      = parsed_img.attributes["src"].value
               
               img_plain      = HTTParty.get(image_url)
               img_ext        = img_plain.headers["content-type"].sub("image/", "")
