@@ -87,6 +87,13 @@ class FeedEntry < ActiveRecord::Base
             else
               image_url      = parsed_img.attributes["src"].value
               
+              unless image_url.start_with?("http")
+                prefix = feed_source.url.match(/http[sS]?:\/\/[^\/]+/)[0]
+                prefix = '/' + prefix unless image_url.match(/\A\//)[0]
+                
+                image_url = prefix + image_url
+              end
+              
               img_plain      = HTTParty.get(image_url)
               img_ext        = img_plain.headers["content-type"].sub("image/", "")
               
