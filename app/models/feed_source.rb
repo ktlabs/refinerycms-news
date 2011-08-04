@@ -1,6 +1,7 @@
 class FeedSource < ActiveRecord::Base
 
   has_many :feed_entries
+  has_many :news_items
 
   scope :active, where(:active => true)
 
