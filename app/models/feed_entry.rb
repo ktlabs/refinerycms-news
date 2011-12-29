@@ -138,7 +138,7 @@ class FeedEntry < ActiveRecord::Base
           
           I18n.locale = :ru
           news_item.title = entry.title
-          news_item.body  = self.truncate(parsed_content)
+          news_item.body  = entry.url
           news_item.save
         end
       end
