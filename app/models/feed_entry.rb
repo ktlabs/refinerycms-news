@@ -129,7 +129,7 @@ class FeedEntry < ActiveRecord::Base
           I18n.locale = :en
           news_item = NewsItem.create(
             :title => entry.title,
-            :body => self.truncate(parsed_content),
+            :body => entry.url,
             :publish_date => DateTime.now,
             :created_at => entry.published,
             :feed_source_id => feed_source.id,
